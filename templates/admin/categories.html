@@ -1,0 +1,43 @@
+{% extends "admin/base.html" %}
+{% block title %}Danh mục{% endblock %}
+{% block page_title %}Danh mục{% endblock %}
+
+{% block content %}
+<div class="admin-toolbar">
+  <div></div>
+  <a href="{{ url_for('admin.category_add') }}" class="btn">+ Thêm danh mục</a>
+</div>
+
+<section class="admin-panel">
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Tên danh mục</th>
+          <th>Mô tả</th>
+          <th>Số sản phẩm</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in categories %}
+        <tr>
+          <td>{{ c.name }}</td>
+          <td class="admin-truncate">{{ c.description or '' }}</td>
+          <td>{{ c.product_count }}</td>
+          <td class="admin-row-actions">
+            <a href="{{ url_for('admin.category_edit', category_id=c.id) }}" class="btn-icon" title="Sửa">✏️</a>
+            <form method="POST" action="{{ url_for('admin.category_delete', category_id=c.id) }}"
+                  data-confirm="Xóa danh mục &quot;{{ c.name }}&quot;?">
+              <button type="submit" class="btn-icon btn-icon-danger" title="Xóa">🗑️</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="empty-state">Chưa có danh mục nào.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

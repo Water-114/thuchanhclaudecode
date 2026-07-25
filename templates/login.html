@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Coffee Shop - Đăng nhập{% endblock %}
+
+{% block content %}
+  <main class="container section">
+    <div class="auth-box">
+      <h2>Đăng nhập</h2>
+      <p class="section-subtitle">Đăng nhập để đặt hàng và xem lịch sử đơn hàng</p>
+
+      <form method="POST" class="auth-form" novalidate>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required autofocus>
+        </div>
+        <div class="form-group">
+          <label for="password">Mật khẩu</label>
+          <input type="password" id="password" name="password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn">Đăng nhập</button>
+      </form>
+
+      <p class="auth-switch">Chưa có tài khoản? <a href="{{ url_for('register') }}">Đăng ký ngay</a></p>
+    </div>
+  </main>
+{% endblock %}

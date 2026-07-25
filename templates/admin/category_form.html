@@ -1,0 +1,24 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Thêm danh mục' if mode == 'add' else 'Sửa danh mục' }}{% endblock %}
+{% block page_title %}{{ 'Thêm danh mục' if mode == 'add' else 'Sửa danh mục' }}{% endblock %}
+
+{% block content %}
+<section class="admin-panel admin-panel-form">
+  <form method="POST" class="admin-form">
+    <div class="form-row">
+      <label for="name">Tên danh mục</label>
+      <input type="text" id="name" name="name" value="{{ category.name or '' }}" required>
+    </div>
+
+    <div class="form-row">
+      <label for="description">Mô tả</label>
+      <textarea id="description" name="description" rows="4">{{ category.description or '' }}</textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn">{{ 'Thêm danh mục' if mode == 'add' else 'Lưu thay đổi' }}</button>
+      <a href="{{ url_for('admin.categories_list') }}" class="btn btn-outline">Hủy</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

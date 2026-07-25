@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Coffee Shop - Trang chủ{% endblock %}
+
+{% block content %}
+  <section class="carousel">
+    <div class="carousel-track"></div>
+    <button class="carousel-btn prev" aria-label="Trước">&#10094;</button>
+    <button class="carousel-btn next" aria-label="Sau">&#10095;</button>
+    <div class="carousel-dots"></div>
+  </section>
+
+  <section class="intro-strip">
+    <h2>Chào mừng đến với Coffee Shop</h2>
+    <p>Hương vị cà phê Việt đích thực, pha chế thủ công từ những hạt cà phê thượng hạng. Ghé thăm và khám phá thực đơn đa dạng của chúng tôi.</p>
+    <div class="category-chip-row" id="category-chip-row"></div>
+  </section>
+
+  <main class="container section">
+    <h2 class="section-title">Sản phẩm mới nhất</h2>
+    <p class="section-subtitle">Những món thức uống vừa được cập nhật tại Coffee Shop</p>
+    <div class="product-grid" id="latest-products">
+      <p class="loading">Đang tải sản phẩm...</p>
+    </div>
+  </main>
+{% endblock %}
+
+{% block extra_scripts %}
+  <script>
+    fetchShopData().then(({ categories }) => {
+      const row = document.querySelector('#category-chip-row');
+      row.innerHTML = categories
+        .map((c) => `<a class="category-chip" href="{{ url_for('products_page') }}?cat=${c.id}">${c.name}</a>`)
+        .join('');
+    });
+  </script>
+{% endblock %}

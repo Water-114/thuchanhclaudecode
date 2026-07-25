@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập Admin - Coffee Shop</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-login-body">
+  <div class="admin-login-box">
+    <div class="admin-logo admin-logo-center">Coffee<span>Shop</span></div>
+    <p class="admin-login-subtitle">Đăng nhập khu vực quản trị</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="admin-flash-list">
+          {% for category, message in messages %}
+            <div class="admin-flash admin-flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" class="admin-login-form">
+      <label for="password">Mật khẩu quản trị</label>
+      <input type="password" id="password" name="password" required autofocus autocomplete="current-password">
+      <button type="submit" class="btn admin-login-btn">Đăng nhập</button>
+    </form>
+
+    <a href="{{ url_for('home') }}" class="admin-back-link">&larr; Về trang chủ Coffee Shop</a>
+  </div>
+</body>
+</html>

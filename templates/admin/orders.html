@@ -1,0 +1,61 @@
+{% extends "admin/base.html" %}
+{% block title %}Đơn hàng{% endblock %}
+{% block page_title %}Đơn hàng{% endblock %}
+
+{% block content %}
+<div class="admin-toolbar">
+  <form method="GET" class="admin-search-form">
+    <select name="status">
+      <option value="">Tất cả trạng thái</option>
+      {% for s in status_order %}
+      <option value="{{ s }}" {{ 'selected' if status == s else '' }}>{{ status_labels[s] }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-outline">Lọc</button>
+    {% if status %}
+    <a href="{{ url_for('admin.orders_list') }}" class="admin-clear-filter">Xóa lọc</a>
+    {% endif %}
+  </form>
+</div>
+
+<section class="admin-panel">
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Mã đơn</th>
+          <th>Khách hàng</th>
+          <th>Tổng tiền</th>
+          <th>Trạng thái</th>
+          <th>Ngày đặt</th>
+          <th>Cập nhật nhanh</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in orders %}
+        <tr>
+          <td><a href="{{ url_for('admin.order_detail', order_id=o.id) }}" class="admin-order-link">#{{ o.id }}</a></td>
+          <td>{{ o.customer_name }}</td>
+          <td>{{ o.total_amount|currency }}</td>
+          <td><span class="status-badge status-{{ o.status }}">{{ status_labels[o.status] }}</span></td>
+          <td>{{ o.created_at[:10] }}</td>
+          <td>
+            <form method="POST" action="{{ url_for('admin.order_update_status', order_id=o.id) }}" class="admin-inline-status-form">
+              <input type="hidden" name="next" value="{{ request.full_path }}">
+              <select name="status">
+                {% for s in status_order %}
+                <option value="{{ s }}" {{ 'selected' if s == o.status else '' }}>{{ status_labels[s] }}</option>
+                {% endfor %}
+              </select>
+              <button type="submit" class="btn-icon" title="Cập nhật">✔</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="empty-state">Không có đơn hàng nào.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

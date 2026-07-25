@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Coffee Shop - Sản phẩm{% endblock %}
+
+{% block content %}
+  <main class="container section">
+    <h2 class="section-title">Sản phẩm</h2>
+    <p class="section-subtitle">Lọc theo danh mục để tìm thức uống yêu thích của bạn</p>
+
+    <div class="filter-bar" id="filter-bar"></div>
+
+    <div class="product-grid" id="product-grid">
+      <p class="loading">Đang tải sản phẩm...</p>
+    </div>
+  </main>
+{% endblock %}

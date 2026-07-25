@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Coffee Shop - Đơn hàng #{{ order.id }}{% endblock %}
+
+{% block content %}
+  <main class="container section">
+    <a href="{{ url_for('my_orders') }}" class="auth-switch" style="display:inline-block;margin-bottom:20px;">&larr; Đơn hàng của tôi</a>
+
+    {% if request.args.get('placed') %}
+    <div class="flash-message flash-success" style="margin-bottom:20px;">Đặt hàng thành công! Chúng tôi sẽ liên hệ xác nhận sớm nhất.</div>
+    {% endif %}
+
+    <h2 class="section-title">Đơn hàng #{{ order.id }}</h2>
+    <p class="section-subtitle">
+      <span class="status-badge status-{{ order.status }}">{{ status_labels[order.status] }}</span>
+      &nbsp;·&nbsp; Đặt lúc {{ order.created_at[:16].replace('T', ' ') }}
+    </p>
+
+    {% if order.note %}
+    <p class="section-subtitle">Ghi chú: {{ order.note }}</p>
+    {% endif %}
+
+    <div class="cart-table-wrap">
+      <table class="cart-table">
+        <thead>
+          <tr><th></th><th>Sản phẩm</th><th>Đơn giá</th><th>Số lượng</th><th>Thành tiền</th></tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td>
+              {% if item.product_image %}
+              <img class="cart-thumb" src="{{ url_for('static', filename=item.product_image) }}" alt="{{ item.product_name }}">
+              {% endif %}
+            </td>
+            <td>{{ item.product_name }}</td>
+            <td>{{ item.price|currency }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ (item.price * item.quantity)|currency }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cart-summary">
+      <div class="cart-subtotal">Tổng cộng: <strong>{{ order.total_amount|currency }}</strong></div>
+    </div>
+  </main>
+{% endblock %}

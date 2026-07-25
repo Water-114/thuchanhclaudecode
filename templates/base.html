@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Coffee Shop{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar">
+      <a href="{{ url_for('home') }}" class="logo">Coffee<span>Shop</span></a>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('home') }}" class="{{ 'active' if active_page == 'home' else '' }}">Trang chủ</a></li>
+        <li><a href="{{ url_for('products_page') }}" class="{{ 'active' if active_page == 'products' else '' }}">Sản phẩm</a></li>
+        <li><a href="{{ url_for('contact_page') }}" class="{{ 'active' if active_page == 'contact' else '' }}">Liên hệ</a></li>
+        <li><a href="{{ url_for('admin.dashboard') }}">Admin</a></li>
+        <li><a href="{{ url_for('cart_page') }}" class="{{ 'active' if active_page == 'cart' else '' }}">🛒 Giỏ hàng <span class="cart-count" id="nav-cart-count">0</span></a></li>
+        {% if g.customer %}
+        <li><a href="{{ url_for('my_orders') }}" class="{{ 'active' if active_page == 'orders' else '' }}">Đơn hàng của tôi</a></li>
+        <li><a href="{{ url_for('logout') }}">Đăng xuất ({{ g.customer.name }})</a></li>
+        {% else %}
+        <li><a href="{{ url_for('login') }}" class="{{ 'active' if active_page == 'login' else '' }}">Đăng nhập</a></li>
+        {% endif %}
+      </ul>
+      <button class="nav-toggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="container flash-container">
+      {% for category, message in messages %}
+      <div class="flash-message flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Coffee Shop</h4>
+          <p>Không gian cà phê ấm cúng, thức uống chất lượng, phục vụ tận tâm.</p>
+        </div>
+        <div>
+          <h4>Liên kết</h4>
+          <a href="{{ url_for('home') }}">Trang chủ</a>
+          <a href="{{ url_for('products_page') }}">Sản phẩm</a>
+          <a href="{{ url_for('contact_page') }}">Liên hệ</a>
+        </div>
+        <div>
+          <h4>Liên hệ</h4>
+          <a href="tel:19006011">Hotline: 1900 6011</a>
+          <a href="mailto:contact@coffeeshop.vn">contact@coffeeshop.vn</a>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Coffee Shop. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Tổng quan{% endblock %} - Admin Coffee Shop</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-body">
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="admin-sidebar">
+      <div class="admin-logo">Coffee<span>Shop</span><small>Admin</small></div>
+      <nav class="admin-nav">
+        <a href="{{ url_for('admin.dashboard') }}" class="{{ 'active' if active_page == 'dashboard' else '' }}">
+          <span class="admin-nav-icon">📊</span> Tổng quan
+        </a>
+        <a href="{{ url_for('admin.products_list') }}" class="{{ 'active' if active_page == 'products' else '' }}">
+          <span class="admin-nav-icon">☕</span> Sản phẩm
+        </a>
+        <a href="{{ url_for('admin.categories_list') }}" class="{{ 'active' if active_page == 'categories' else '' }}">
+          <span class="admin-nav-icon">🗂️</span> Danh mục
+        </a>
+        <a href="{{ url_for('admin.orders_list') }}" class="{{ 'active' if active_page == 'orders' else '' }}">
+          <span class="admin-nav-icon">🧾</span> Đơn hàng
+        </a>
+        <a href="{{ url_for('admin.customers_list') }}" class="{{ 'active' if active_page == 'customers' else '' }}">
+          <span class="admin-nav-icon">👥</span> Khách hàng
+        </a>
+      </nav>
+      <a href="{{ url_for('admin.logout') }}" class="admin-logout">
+        <span class="admin-nav-icon">⎋</span> Đăng xuất
+      </a>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <button class="admin-menu-toggle" id="admin-menu-toggle" aria-label="Menu">☰</button>
+        <h1>{% block page_title %}Tổng quan{% endblock %}</h1>
+      </header>
+
+      <main class="admin-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="admin-flash-list">
+              {% for category, message in messages %}
+                <div class="admin-flash admin-flash-{{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

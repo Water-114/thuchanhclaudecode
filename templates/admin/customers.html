@@ -1,0 +1,44 @@
+{% extends "admin/base.html" %}
+{% block title %}Khách hàng{% endblock %}
+{% block page_title %}Khách hàng{% endblock %}
+
+{% block content %}
+<div class="admin-toolbar">
+  <form method="GET" class="admin-search-form">
+    <input type="text" name="q" value="{{ q }}" placeholder="Tìm theo tên hoặc email...">
+    <button type="submit" class="btn btn-outline">Tìm</button>
+    {% if q %}
+    <a href="{{ url_for('admin.customers_list') }}" class="admin-clear-filter">Xóa lọc</a>
+    {% endif %}
+  </form>
+</div>
+
+<section class="admin-panel">
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Họ tên</th>
+          <th>Email</th>
+          <th>Tên đăng nhập</th>
+          <th>Ngày tạo</th>
+          <th>Tổng số đơn hàng</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in customers %}
+        <tr class="admin-row-clickable" data-href="{{ url_for('admin.customer_detail', customer_id=c.id) }}">
+          <td><a href="{{ url_for('admin.customer_detail', customer_id=c.id) }}" class="admin-order-link">{{ c.name }}</a></td>
+          <td>{{ c.email }}</td>
+          <td>{{ c.username or '' }}</td>
+          <td>{{ c.created_at[:10] }}</td>
+          <td>{{ c.order_count }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="empty-state">Không tìm thấy khách hàng nào.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

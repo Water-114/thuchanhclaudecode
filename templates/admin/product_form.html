@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ 'Thêm sản phẩm' if mode == 'add' else 'Sửa sản phẩm' }}{% endblock %}
+{% block page_title %}{{ 'Thêm sản phẩm' if mode == 'add' else 'Sửa sản phẩm' }}{% endblock %}
+
+{% block content %}
+<section class="admin-panel admin-panel-form">
+  <form method="POST" class="admin-form">
+    <div class="form-row">
+      <label for="name">Tên sản phẩm</label>
+      <input type="text" id="name" name="name" value="{{ product.name or '' }}" required>
+    </div>
+
+    <div class="form-row form-row-split">
+      <div>
+        <label for="price">Giá (đ)</label>
+        <input type="number" id="price" name="price" value="{{ product.price or '' }}" min="0" step="500" required>
+      </div>
+      <div>
+        <label for="category_id">Danh mục</label>
+        <select id="category_id" name="category_id" required>
+          <option value="">-- Chọn danh mục --</option>
+          {% for c in categories %}
+          <option value="{{ c.id }}" {{ 'selected' if product.category_id|string == c.id|string else '' }}>{{ c.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label for="image">Đường dẫn ảnh (trong static/images/...)</label>
+      <input type="text" id="image" name="image" value="{{ product.image or '' }}" placeholder="images/products/ten-anh.jpg">
+    </div>
+
+    <div class="form-row">
+      <label for="description">Mô tả</label>
+      <textarea id="description" name="description" rows="6">{{ product.description or '' }}</textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn">{{ 'Thêm sản phẩm' if mode == 'add' else 'Lưu thay đổi' }}</button>
+      <a href="{{ url_for('admin.products_list') }}" class="btn btn-outline">Hủy</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

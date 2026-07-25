@@ -1,0 +1,66 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ customer.name }}{% endblock %}
+{% block page_title %}Khách hàng: {{ customer.name }}{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('admin.customers_list') }}" class="admin-back-link admin-back-link-inline">&larr; Danh sách khách hàng</a>
+
+<div class="admin-grid-2">
+  <section class="admin-panel">
+    <h2>Thông tin cá nhân</h2>
+    <dl class="order-info-list">
+      <dt>Họ tên</dt>
+      <dd>{{ customer.name }}</dd>
+      <dt>Email</dt>
+      <dd>{{ customer.email }}</dd>
+      <dt>Tên đăng nhập</dt>
+      <dd>{{ customer.username or 'Không có' }}</dd>
+      <dt>Điện thoại</dt>
+      <dd>{{ customer.phone or 'Không có' }}</dd>
+      <dt>Ngày tạo</dt>
+      <dd>{{ customer.created_at[:10] }}</dd>
+    </dl>
+  </section>
+
+  <section class="admin-panel">
+    <h2>Tổng chi tiêu</h2>
+    <div class="stat-card stat-card-flat">
+      <div class="stat-icon">💰</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ total_spent|currency }}</div>
+        <div class="stat-label">Tổng giá trị các đơn hoàn thành</div>
+      </div>
+    </div>
+    <div class="stat-card stat-card-flat">
+      <div class="stat-icon">🧾</div>
+      <div class="stat-body">
+        <div class="stat-value">{{ orders|length }}</div>
+        <div class="stat-label">Tổng số đơn hàng (mọi trạng thái)</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="admin-panel">
+  <h2>Lịch sử đơn hàng</h2>
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr><th>Mã đơn</th><th>Ngày đặt</th><th>Tổng tiền</th><th>Trạng thái</th></tr>
+      </thead>
+      <tbody>
+        {% for o in orders %}
+        <tr>
+          <td><a href="{{ url_for('admin.order_detail', order_id=o.id) }}" class="admin-order-link">#{{ o.id }}</a></td>
+          <td>{{ o.created_at[:10] }}</td>
+          <td>{{ o.total_amount|currency }}</td>
+          <td><span class="status-badge status-{{ o.status }}">{{ status_labels[o.status] }}</span></td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="empty-state">Khách hàng chưa có đơn hàng nào.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

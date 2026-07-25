@@ -1,0 +1,102 @@
+{% extends "admin/base.html" %}
+{% block title %}Đơn hàng #{{ order.id }}{% endblock %}
+{% block page_title %}Đơn hàng #{{ order.id }}{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('admin.orders_list') }}" class="admin-back-link admin-back-link-inline">&larr; Danh sách đơn hàng</a>
+
+<div class="order-detail-header">
+  <div>
+    <span class="status-badge status-{{ order.status }}">{{ status_labels[order.status] }}</span>
+    <span class="order-detail-date">Đặt lúc {{ order.created_at[:16].replace('T', ' ') }}</span>
+  </div>
+  <div class="order-detail-total">{{ order.total_amount|currency }}</div>
+</div>
+
+<div class="admin-grid-2">
+  <section class="admin-panel">
+    <h2>Thông tin khách hàng</h2>
+    <dl class="order-info-list">
+      <dt>Họ tên</dt>
+      <dd>{{ order.customer_name }}</dd>
+      <dt>Email</dt>
+      <dd>{{ order.customer_email }}</dd>
+      <dt>Điện thoại</dt>
+      <dd>{{ order.customer_phone or 'Không có' }}</dd>
+      <dt>Ghi chú</dt>
+      <dd>{{ order.note or 'Không có ghi chú' }}</dd>
+    </dl>
+  </section>
+
+  <section class="admin-panel">
+    <h2>Cập nhật trạng thái</h2>
+    <form method="POST" action="{{ url_for('admin.order_update_status', order_id=order.id) }}" class="admin-status-form">
+      <input type="hidden" name="next" value="{{ url_for('admin.order_detail', order_id=order.id) }}">
+      <div class="form-row">
+        <label for="status">Trạng thái đơn hàng</label>
+        <select id="status" name="status">
+          {% for s in status_order %}
+          <option value="{{ s }}" {{ 'selected' if s == order.status else '' }}>{{ status_labels[s] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn">Lưu trạng thái</button>
+    </form>
+
+    <div class="order-status-buttons">
+      {% for s in status_order %}
+      <form method="POST" action="{{ url_for('admin.order_update_status', order_id=order.id) }}">
+        <input type="hidden" name="next" value="{{ url_for('admin.order_detail', order_id=order.id) }}">
+        <input type="hidden" name="status" value="{{ s }}">
+        <button type="submit" class="status-btn status-btn-{{ s }} {{ 'is-active' if s == order.status else '' }}"
+                {{ 'disabled' if s == order.status else '' }}>
+          {{ status_labels[s] }}
+        </button>
+      </form>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+
+<section class="admin-panel">
+  <h2>Sản phẩm trong đơn</h2>
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Ảnh</th>
+          <th>Sản phẩm</th>
+          <th>Số lượng</th>
+          <th>Đơn giá</th>
+          <th>Thành tiền</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>
+            {% if item.product_image %}
+              <img class="admin-thumb" src="{{ url_for('static', filename=item.product_image) }}" alt="{{ item.product_name }}">
+            {% else %}
+              <div class="admin-thumb admin-thumb-placeholder">☕</div>
+            {% endif %}
+          </td>
+          <td>{{ item.product_name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.price|currency }}</td>
+          <td>{{ (item.price * item.quantity)|currency }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="empty-state">Đơn hàng không có sản phẩm nào.</td></tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="4" class="order-total-label">Tổng cộng</td>
+          <td class="order-total-value">{{ order.total_amount|currency }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</section>
+{% endblock %}

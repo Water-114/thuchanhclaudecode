@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Coffee Shop - Đơn hàng của tôi{% endblock %}
+
+{% block content %}
+  <main class="container section">
+    <h2 class="section-title">Đơn hàng của tôi</h2>
+    <p class="section-subtitle">Lịch sử các đơn hàng bạn đã đặt tại Coffee Shop</p>
+
+    {% if orders %}
+    <div class="cart-table-wrap">
+      <table class="cart-table">
+        <thead>
+          <tr><th>Mã đơn</th><th>Ngày đặt</th><th>Tổng tiền</th><th>Trạng thái</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for o in orders %}
+          <tr>
+            <td>#{{ o.id }}</td>
+            <td>{{ o.created_at[:10] }}</td>
+            <td>{{ o.total_amount|currency }}</td>
+            <td><span class="status-badge status-{{ o.status }}">{{ status_labels[o.status] }}</span></td>
+            <td><a href="{{ url_for('order_detail_page', order_id=o.id) }}" class="btn btn-outline">Xem chi tiết</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="empty-state">Bạn chưa có đơn hàng nào. <a href="{{ url_for('products_page') }}">Khám phá sản phẩm</a></p>
+    {% endif %}
+  </main>
+{% endblock %}

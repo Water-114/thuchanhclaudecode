@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Coffee Shop - Liên hệ{% endblock %}
+
+{% block content %}
+  <main class="container section">
+    <h2 class="section-title">Liên hệ với chúng tôi</h2>
+    <p class="section-subtitle">Chúng tôi luôn lắng nghe góp ý từ bạn</p>
+
+    <div class="contact-layout">
+      <div class="contact-info-card">
+        <h3>Thông tin liên hệ</h3>
+        <div class="contact-info-item">
+          <span class="icon">📍</span>
+          <div>
+            <strong>Địa chỉ</strong>
+            <span>227 Nguyễn Văn Cừ, Phường 4, Quận 5, TP. Hồ Chí Minh</span>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <span class="icon">📞</span>
+          <div>
+            <strong>Hotline</strong>
+            <a href="tel:19006011">1900 6011</a>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <span class="icon">✉️</span>
+          <div>
+            <strong>Email</strong>
+            <a href="mailto:contact@coffeeshop.vn">contact@coffeeshop.vn</a>
+          </div>
+        </div>
+        <div class="contact-info-item">
+          <span class="icon">🕒</span>
+          <div>
+            <strong>Giờ mở cửa</strong>
+            <span>07:00 - 22:00 (Tất cả các ngày trong tuần)</span>
+          </div>
+        </div>
+        <div class="map-embed">
+          <iframe
+            title="Bản đồ"
+            src="https://www.google.com/maps?q=227%20Nguyen%20Van%20Cu%2C%20Quan%205%2C%20TP.HCM&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+
+      <div class="contact-form-card">
+        <h3>Gửi góp ý cho chúng tôi</h3>
+        <form id="contact-form" novalidate>
+          <div class="form-group">
+            <label for="name">Họ và tên</label>
+            <input type="text" id="name" name="name" placeholder="Nhập họ tên của bạn">
+            <div class="form-error" data-error-for="name"></div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="ban@email.com">
+            <div class="form-error" data-error-for="email"></div>
+          </div>
+          <div class="form-group">
+            <label for="message">Nội dung góp ý</label>
+            <textarea id="message" name="message" rows="5" placeholder="Chia sẻ trải nghiệm của bạn..."></textarea>
+            <div class="form-error" data-error-for="message"></div>
+          </div>
+          <button type="submit" class="btn">Gửi góp ý</button>
+          <div class="form-feedback" id="form-feedback"></div>
+        </form>
+      </div>
+    </div>
+  </main>
+{% endblock %}
